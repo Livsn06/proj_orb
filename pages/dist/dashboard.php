@@ -49,13 +49,15 @@ if(isset($_SESSION['studLogin'])){
                 
                         <div class="full-notif" id="full-notif">
                             <button class="pd-notif" id="notif-btn"><i class="fa-solid fa-bell fa-2xl notif-icon"></i></button>
-                            
                         </div>
-                        <button class="pd-prof">
-                            <img src="../images/default_Userprofile.png" alt="">
-                            <h6>Username</h6>
-                            <i class="fa fa-caret-down user-icon" aria-hidden="true"></i>
-                        </button>
+
+                        <div class="full-user" id="full-user">
+                            <button class="pd-prof" id="user-btn">
+                                <img src="../images/default_Userprofile.png" alt="">
+                                <h6><?php echo getSelected_Data("instrlname")?></h6>
+                                <i class="fa fa-caret-down user-icon" aria-hidden="true"></i>
+                            </button>
+                        </div>
                 </header>
 
 
@@ -113,3 +115,24 @@ if(isset($_SESSION['studLogin'])){
 </html>
 
 
+<?php
+
+    function getSelected_Data($column)
+    {
+        require "../../config/config.php";
+        $email = $_SESSION['instrLogin'];
+        $syntax = "SELECT $column FROM instructorreg WHERE instremail = '$email'";
+
+        $result = $conn -> query($syntax);
+        if($result -> num_rows > 0){
+            while($data = $result -> fetch_assoc()){
+                $result->free();
+                $conn -> close();
+                return $data[$column];
+            }
+        }
+        $result->free();
+        $conn -> close();
+        return "Username";
+    }
+?>
