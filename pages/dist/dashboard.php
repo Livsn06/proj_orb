@@ -1,18 +1,17 @@
 <!-- FOR INSTRUCTOR -->
-<!-- 
+
 <?php
-// session_start();
-
+session_start();
 // if not log in ung session ng instructor page babalik sa landing page
-// if(!isset($_SESSION['instrLogin'])){
-//     header("Location: index.php");
-// }
+if(!isset($_SESSION['instrLogin'])){
+    header("Location: landing.php");
+}
 // if not log in as instructor pero naka log in as student babalik sya sa student homepage
-// if(isset($_SESSION['studLogin'])){
-//     header("Location: home.php");
-// }
+if(isset($_SESSION['studLogin'])){
+    header("Location: home.php");
+}
 
-?> -->
+?>
 
 
 <!DOCTYPE html>
@@ -34,7 +33,7 @@
 
 
 
-    <link rel="stylesheet" href="../styles/landing.css">
+    <link rel="stylesheet" href="../styles/dashboard.css">
 
     <script src="https://kit.fontawesome.com/a3ac451aad.js" crossorigin="anonymous"></script>
     <title>Project Orbit | Dashboard</title>

@@ -1,4 +1,17 @@
+<?php
 
+    session_start();
+
+    // if  log in ung session ng student page babalik sa home page
+    if(isset($_SESSION['studLogin'])){
+        header("Location: home.php");
+    }
+    // if  log in ung session ng instructor page babalik sa dashboard page
+    if(isset($_SESSION['instrLogin'])){
+        header("Location: dashboard.php");
+    }
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
