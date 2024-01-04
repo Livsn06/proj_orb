@@ -46,10 +46,12 @@ echo '
 <?php
 if(isset($_POST['insertProject']))
 {
+    session_start();
    $title = trim($_POST['ptitle']);
    $cover = $_FILES['file'];
    $due = trim($_POST['pdue']);
-   $user = "223-114";
+   $userid =  returnUserID($_SESSION['instrLogin']);
+  
 
    require "../../config/config.php";
 
@@ -57,7 +59,7 @@ if(isset($_POST['insertProject']))
     {
         $path = upload_Cover($cover);
        
-        $stx = "INSERT INTO project (projectname, projectcover, projectdue, instrid) VALUES ('$title', '$path', '$due', '$user')";
+        $stx = "INSERT INTO project (projectname, projectcover, projectdue, instrid) VALUES ('$title', '$path', '$due', '$userid')";
         $conn->query($stx);  
     }
 }
@@ -82,4 +84,24 @@ function upload_Cover($coverfile)
     move_uploaded_file($oldDIR, $path);
     return $path;
 }
+
+function returnUserID($useremail)
+{
+    require "../../config/config.php";
+    $stx = "SELECT instrid FROM instructorreg WHERE instremail = '$useremail'";
+
+    $res = $conn->query($stx);
+    
+    if($res ->num_rows > 0){
+        foreach($res as $row){
+            $res->free();
+            $conn->close();
+            return $row['instrid'];
+        }    
+    }
+    $res->free();
+    $conn->close();
+    return "";
+}
+
 ?>

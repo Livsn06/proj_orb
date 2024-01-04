@@ -3,10 +3,20 @@
 
     if(isset($_POST['getPinned'])){
         
+        session_start();
+        $table = validateActiveUserStatus();
+        $colemail = ($table == "instructorreg")? "instructorreg.instremail" : "studemail";
+        $colid = ($table == "instructorreg")? "instructorreg.instrid" : "studid";
+        $activeEmail = getactiveUserEmail();
+
         require "../../../config/config.php";
+
         $stx = "SELECT projectid, projectname, projectcover, userid FROM project 
-        INNER JOIN pinned_project ON projectid = projid ORDER BY pintime DESC";
-    
+        INNER JOIN pinned_project ON projectid = projid INNER JOIN
+        $table ON $colid = userid WHERE $colemail = '$activeEmail' ORDER BY pintime DESC";
+
+
+
         $res = $conn->query($stx);
     
         if ($res->num_rows > 0) {
@@ -34,6 +44,7 @@
     if(isset($_POST['changePin'])){
         
         $projID = trim($_POST['projid']);
+
 
         require "../../../config/config.php";
 
@@ -100,5 +111,29 @@ function isPinned ($projID)
     $res->free();
     return false;
 }
+
+function validateActiveUserStatus()
+{
+    if(!empty($_SESSION['instrLogin'])){
+        return 'instructorreg';
+    }
+    if(!empty($_SESSION['studLogin'])){
+        return 'studentreg';
+    }
+    
+    return "no user";
+}
+function getactiveUserEmail()
+{
+    if(!empty($_SESSION['instrLogin'])){
+        return $_SESSION['instrLogin'];
+    }
+    if(!empty($_SESSION['studLogin'])){
+        return $_SESSION['studLogin'];
+    }
+    
+    return "no user";
+}
+
 ?>
 

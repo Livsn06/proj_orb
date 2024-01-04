@@ -10,7 +10,6 @@ if(!isset($_SESSION['instrLogin'])){
 if(isset($_SESSION['studLogin'])){
     header("Location: home.php");
 }
-
 ?>
 
 
@@ -119,7 +118,9 @@ if(isset($_SESSION['studLogin'])){
 
     function getSelected_Data($column)
     {
+
         require "../../config/config.php";
+       
         $email = $_SESSION['instrLogin'];
         $syntax = "SELECT $column FROM instructorreg WHERE instremail = '$email'";
 

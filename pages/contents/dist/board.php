@@ -1,7 +1,7 @@
 <?php
 if(isset($_POST['isboard'])){
-
-
+    session_start();
+    $email = $_SESSION['instrLogin'];
     require "../../../config/config.php";
 
     $stx = "SELECT projectid FROM project ORDER BY projectdate DESC";
@@ -41,7 +41,7 @@ if(isset($_POST['isboard'])){
     
         while($row = $res->fetch_assoc()) 
         {
-            echo getCards ($row['projectid']);
+            echo getCards ($row['projectid'], $email);
         }
     
     }
@@ -70,10 +70,12 @@ echo '
 <?php
 
 
-function getCards ($projID)
+function getCards ($projID, $email)
 {
+
     require "../../../config/config.php";
-    $stx = "SELECT projectid, projectname, projectcover, projectdate, projectdue, instrid FROM project WHERE projectid = '$projID'";
+    $stx = "SELECT projectid, projectname, projectcover, projectdate, projectdue FROM project INNER JOIN instructorreg 
+    ON project.instrid = instructorreg.instrid WHERE projectid = '$projID' AND instructorreg.instremail = '$email'";
     $ispinned = isPinned ($projID);
     $res = $conn->query($stx);
 
@@ -148,6 +150,10 @@ function datetimeFormatter($datetimeString)
     $formattedDatetime = $datetime->format('m\-d\-y \a\t g:i a');
     return $formattedDatetime;
 }
+
+
+
+
 ?>
 
 
