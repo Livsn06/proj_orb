@@ -78,7 +78,7 @@ function getCards ($projID, $email)
     ON project.instrid = instructorreg.instrid WHERE projectid = '$projID' AND instructorreg.instremail = '$email'";
     $ispinned = isPinned ($projID);
     $res = $conn->query($stx);
-
+    
     if ($res->num_rows > 0) {
 
         if($ispinned){
@@ -88,7 +88,7 @@ function getCards ($projID, $email)
                 $conn -> close();
                 return '
                         <div style="background-image: url(\''.$row['projectcover'].'\');" id="existproj">
-                        <button id="proj" value="'.$row['projectid'].'">
+                        <button id="proj" value="'.$row['projectid'].'" class="projget">
                             <span class="p-title">'.$row['projectname'].'</span>
                             <span class="s-date">Created: '.$row['projectdate'].'</span>
                             <span class="e-date">Due Date: '.$row['projectdue'].'</span>
@@ -109,7 +109,7 @@ function getCards ($projID, $email)
                 $conn -> close();
                 return '
                     <div style="background-image: url(\''.$row['projectcover'].'\');" id="existproj">
-                    <button id="proj" value="'.$row['projectid'].'">
+                    <button id="proj" value="'.$row['projectid'].'" class="projget">
                         <span class="p-title">'.$row['projectname'].'</span>
                         <span class="s-date"><b>Created:</b> '.datetimeFormatter($row['projectdate']).'</span>
                         <span class="e-date"><b>Due Date:</b> '.datetimeFormatter($row['projectdue']).'</span>

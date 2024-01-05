@@ -1,17 +1,9 @@
-<!-- FOR INSTRUCTOR -->
-
 <?php
 session_start();
-// if not log in ung session ng instructor page babalik sa landing page
-if(!isset($_SESSION['instrLogin'])){
-    header("Location: landing.php");
-}
-// if not log in as instructor pero naka log in as student babalik sya sa student homepage
-if(isset($_SESSION['studLogin'])){
-    header("Location: home.php");
+if(empty($_SESSION['setProject'])){
+    header("Location: dashboard.php");
 }
 ?>
-
 
 <!DOCTYPE html>
 <html lang="en">
@@ -24,17 +16,12 @@ if(isset($_SESSION['studLogin'])){
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 
-    <script src="../functions/dashboard/sidebar.js"></script>
-    <script src="../functions/dashboard/create_project.js"></script>
+    <script src="../functions/project/taskpercent.js"></script>
+    <script src="../functions/project/projectfunction.js"></script>
     <script src="../functions/dashboard/nav_function.js"></script>
-    <script src="../functions/dashboard/cardfunction.js"></script>
-    <script src="../functions/dashboard/for_board.js"></script>
-    <script src="../../modals/functions/createvalidation.js"></script>
-    
+    <script src="../functions/project/sidebar.js"></script>
 
-
-
-    <link rel="stylesheet" href="../styles/dashboard.css">
+    <link rel="stylesheet" href="../styles/project.css">
 
     <script src="https://kit.fontawesome.com/a3ac451aad.js" crossorigin="anonymous"></script>
     <title>Project Orbit | Dashboard</title>
@@ -61,50 +48,9 @@ if(isset($_SESSION['studLogin'])){
                         </div>
                 </header>
 
-
             <section class="inner-contents" id="content-show">
       
             <!-- !CONTENTS SHOW -->
-<main class="member" id="member">
-<div class="nav">
-    <div class="dropdown">
-        <small>Order by</small>
-        <select name="" id="">
-            <option value="">option 1</option>
-            <option value="">option 2</option>
-            <option value="">option 3</option>
-        </select>
-    </div>
-    <button>
-        <i class="fa-solid fa-user-group"></i>
-        <span>Pending Request</span>
-    </button>
-    <button>
-        <i class="fa-solid fa-user-plus"></i>
-        <span>Add Member</span>
-    </button>
-</div>
-
-<table id="myTable" class="display">
-    <thead>
-        <tr>
-            <th>Column 1</th>
-            <th>Column 2</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <td>Row 1 Data 1</td>
-            <td>Row 1 Data 2</td>
-        </tr>
-        <tr>
-            <td>Row 2 Data 1</td>
-            <td>Row 2 Data 2</td>
-        </tr>
-    </tbody>
-</table>
-
-</main>
 
                 
             </section>
@@ -112,10 +58,17 @@ if(isset($_SESSION['studLogin'])){
 
         <!-- SIDEBAR -->
         <main class="left-sec"> 
-                  
+            
             <aside class="sidebar">
-                <a href="dashboard.php"><button class="logo">
-                    <img src="../images/logo_2.png" alt="">
+
+          
+                    <button class="back-to-proj" id="back-projs">
+                        <i class="fa-solid fa-arrow-left"></i>
+                        <span>back to projects</span>
+                    </button>
+          
+                <a href="project.php"><button class="logo">
+                    <img src="<?php echo get_Projectdata('projectcover');?>" alt="">
                 </button></a>
                 
                 
@@ -123,29 +76,24 @@ if(isset($_SESSION['studLogin'])){
                    <small> Main menu</small>
 
                    <!-- JQUERY WHEN CLICKED ADD "selected" class name -->
-                   <button class="selected" id="navboard" value="showboard">
+                   <button class="selected" id="navpdetails" value="showboard">
                    <i class="fa-solid fa-folder-closed fa-lg icon"></i>
-                        Board
+                       Project Details
                    </button>
-                   <button class="" id="navmember" value="showmember">
+                   <button class="" id="navpmember" value="showmember">
                    <i class="fa-solid fa-user-group fa-lg icon "></i>
-                        People
+                        Members
                    </button>
-                   <button class="" id="navcalendar" value="showcalendar">
+                   <button class="" id="navpfiles" value="showcalendar">
                    <i class="fa-solid fa-calendar-days fa-lg icon"></i>
-                        Calendar
+                        Files
+                   </button>
+                   <button class="" id="navpgrades" value="showcalendar">
+                   <i class="fa-solid fa-receipt fa-lg icon"></i>
+                        Grades
                    </button>
                 </div>
                 
-                <hr class="line">
-                
-                <div class="starred">
-                    <small>Starred project</small>
-                    <div class="pin-card" id="pinned">
-                        <!-- AJAX GET ALL PINNED PROJECTS -->
-                     
-                    </div>                
-                </div>
             </aside>
         </main>
 
@@ -156,11 +104,11 @@ if(isset($_SESSION['studLogin'])){
 </html>
 
 
+
 <?php
 
     function getSelected_Data($column)
     {
-
         require "../../config/config.php";
        
         $email = $_SESSION['instrLogin'];
@@ -177,5 +125,27 @@ if(isset($_SESSION['studLogin'])){
         $result->free();
         $conn -> close();
         return "Username";
+    }
+
+
+
+    function get_Projectdata($column)
+    {
+        require "../../config/config.php";
+
+        $projid = $_SESSION['setProject'];
+        $sntx = "SELECT $column FROM project WHERE projectid = '$projid'";
+        $result = $conn -> query($sntx);
+
+        if($result -> num_rows > 0){
+            while($data = $result -> fetch_assoc()){
+                $result->free();
+                $conn -> close();
+                return $data[$column];
+            }
+        }
+        $result->free();
+        $conn -> close();
+        return "cover";
     }
 ?>
