@@ -49,7 +49,6 @@ if(empty($_SESSION['setProject'])){
                 </header>
 
             <section class="inner-contents" id="content-show">
-      
             <!-- !CONTENTS SHOW -->
 
                 

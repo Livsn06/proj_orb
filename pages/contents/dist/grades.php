@@ -31,7 +31,7 @@
                     // Display data in HTML table
                     while ($row = $result->fetch_assoc()) {
                         echo "<tr>";
-                        echo "<td>" . $row['projectDue'] . "</td>"; // Correct column name
+                        echo "<td>" .datetimeFormatter($row['projectDue']) . "</td>"; // Correct column name
                         echo "<td>" . $row['projectName'] . "</td>"; // Correct column name
                         // echo "<td>" . $row['feedback'] . "</td>";
                         // echo "<td>" . $row['grade'] . "</td>";
@@ -46,3 +46,15 @@
 
 </body>
 </html>
+
+
+<?php
+
+function datetimeFormatter($datetimeString)
+{
+    $datetime = new DateTime($datetimeString);
+    $formattedDatetime = $datetime->format('m\-d\-y \a\t g:i a');
+    return $formattedDatetime;
+}
+
+?>

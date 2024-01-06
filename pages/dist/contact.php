@@ -63,7 +63,6 @@
         <img src="../images/logo.png" alt="" class="logo">
         <div class="links">
             <li><a href="about.php" target="_blank">About</a></li>
-            <li><a href="contact.php" target="_blank">Contact</a></li>
         </div>  
     </header>
     <div id="modal"></div>

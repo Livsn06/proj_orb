@@ -51,11 +51,9 @@ if(empty($_SESSION['setProject'])){
         </header>
 
 <section class="create-task">
-    <form>
+    <form method="$_POST" action="createtask.php">
         <label for="taskName">TASK NAME</label>
         <input type="text" name="taskName" id="taskName" required>
-
-
 
         <label for="dueDate">DUE DATE</label>
         <input type="datetime-local" name="dueDate" id="dueDate" required>
@@ -101,7 +99,33 @@ if(empty($_SESSION['setProject'])){
 </html>
 
 
+
+
+
+
+
 <?php
+
+
+    if(isset($_POST['taskName']) && 
+    isset($_POST['dueDate']) && 
+    isset($_POST['subTask1']) &&
+    isset($_POST['assignedTo']))
+    {
+        echo "active";
+        require "../../config/config.php";
+        $taskname = $_POST['taskName'];
+        $due = $_POST['dueDate'];
+        $assignto = $_POST['assignedTo'];
+        $taskname = $_POST['taskName'];
+        $assignby = getSelected_Data('instrid');
+        $projid = $_SESSION['setProject'];
+
+        $syntax = "INSERT INTO task (projectid, taskname, assignby, assignto, duedate) 
+        VALUES ('$projid', '$taskname ', '$assignby', '$assignto', '$due')";
+        $conn -> query($syntax);
+
+    }
 
     function getSelected_Data($column)
     {
@@ -164,6 +188,8 @@ if(empty($_SESSION['setProject'])){
                 <option value="'.trim($row['studid']).'">'.trim($row['fullname']).'</option>
                 ';
             }
+        }else{
+            echo '<option value="">--No Data--</option>';
         }
         $result->free();
         $conn -> close();
