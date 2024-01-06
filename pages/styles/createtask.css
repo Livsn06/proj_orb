@@ -1,0 +1,81 @@
+
+:root {
+    --primary: #25B4B2;
+    --secondary: #006D68;
+    --white: #ffffff;
+    --black: #000000;
+    --hover: #E3FFFF;
+  }
+  
+
+.outer-body{
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+.create-task{
+    /* background-color: green; */
+    width: 60%;
+    margin: 20px auto;
+    padding: 50px;
+    border-radius: 20px;
+    box-shadow: 1px 0px 5px 0px rgba(0,0,0,0.44);
+-webkit-box-shadow: 1px 0px 5px 0px rgba(0,0,0,0.44);
+-moz-box-shadow: 1px 0px 5px 0px rgba(0,0,0,0.44);
+}
+
+.create-task form{
+    /* background-color: orange; */
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+
+}
+
+.create-task input{
+    font-size: medium;
+    padding: 5px 10px;
+    border: 2px solid var(--secondary) ;
+    border-radius: 10px;
+    width: 100%;
+    margin-bottom: 10px;
+}
+.create-task label{
+    font-size: larger;
+    color: var(--secondary);
+    font-weight: 900;
+}
+.create-task .subtasks{
+    margin: 10px;
+    margin-left: 80px;
+    font-size: small;
+    font-weight: 500;
+}
+
+.create-task select{
+    width: 100%;
+    font-size: medium;
+    padding: 5px 10px;
+    border-radius: 10px;
+    border: 2px solid var(--secondary);
+    margin-bottom: 20px;
+}
+.create-task button {
+    width: 100%;
+    padding: 10px 10px;
+    background-color: var(--secondary);
+    color: var(--white);
+    border-color: var(--hover);
+    margin-bottom: 20px;
+    border-radius: 10px;
+
+}
+
+.pd-header .backbutton{
+    background-color: var(--white);
+    color: var(--secondary);
+    border-radius: 100px;
+    border-color: #b8b8b8;
+    font-size: medium;
+    padding: 5px 20px;
+}

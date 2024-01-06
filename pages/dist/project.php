@@ -99,7 +99,9 @@ if(empty($_SESSION['setProject'])){
 
     </section>
 
-    <section id="modal-sect"></section>
+    <section id="modal-sect">
+        
+    </section>
 </body>
 </html>
 

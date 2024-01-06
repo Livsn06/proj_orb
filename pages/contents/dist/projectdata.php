@@ -6,10 +6,13 @@ if(isset($_POST['getDetails'])){
     echo '
 <main class="project-settings" id="p-settings">
     <div class="p-nav">
-        <button class="p-btns create-task" id="create-task-btn">
-            <i class="fa-solid fa-file-invoice"></i>
-            <span>Create task</span>
-        </button>
+
+        <a href="createtask.php">
+            <button class="p-btns create-task" id="create-task-btn">
+                <i class="fa-solid fa-file-invoice"></i>
+                <span>Create task</span>
+            </button>
+        </a>
         <a href="#">
             <button class="p-btns meet">
                 <i class="fa-solid fa-video"></i>
