@@ -30,7 +30,13 @@ if(isset($_SESSION['studLogin'])){
     <script src="../functions/dashboard/cardfunction.js"></script>
     <script src="../functions/dashboard/for_board.js"></script>
     <script src="../../modals/functions/createvalidation.js"></script>
-    
+        <!-- Include DataTables CSS and JS -->
+        <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.css">
+    <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.js"></script>
+
+    <!-- Include Bootstrap CSS and JS -->
+
+    <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.10/index.global.min.js'></script>
 
 
 
@@ -65,48 +71,7 @@ if(isset($_SESSION['studLogin'])){
             <section class="inner-contents" id="content-show">
       
             <!-- !CONTENTS SHOW -->
-<main class="member" id="member">
-<div class="nav">
-    <div class="dropdown">
-        <small>Order by</small>
-        <select name="" id="">
-            <option value="">option 1</option>
-            <option value="">option 2</option>
-            <option value="">option 3</option>
-        </select>
-    </div>
-    <button>
-        <i class="fa-solid fa-user-group"></i>
-        <span>Pending Request</span>
-    </button>
-    <button>
-        <i class="fa-solid fa-user-plus"></i>
-        <span>Add Member</span>
-    </button>
-</div>
-
-<table id="myTable" class="display">
-    <thead>
-        <tr>
-            <th>Column 1</th>
-            <th>Column 2</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <td>Row 1 Data 1</td>
-            <td>Row 1 Data 2</td>
-        </tr>
-        <tr>
-            <td>Row 2 Data 1</td>
-            <td>Row 2 Data 2</td>
-        </tr>
-    </tbody>
-</table>
-
-</main>
-
-                
+       
             </section>
         </main>
 
@@ -179,3 +144,4 @@ if(isset($_SESSION['studLogin'])){
         return "Username";
     }
 ?>
+

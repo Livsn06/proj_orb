@@ -5,26 +5,41 @@ if(isset($_POST['ismember'])){
     <main class="member" id="member">
     ';
 ?>
-          
-          <table id="myTable" class="display">
-    <thead>
-        <tr>
-            <th>Column 1</th>
-            <th>Column 2</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <td>Row 1 Data 1</td>
-            <td>Row 1 Data 2</td>
-        </tr>
-        <tr>
-            <td>Row 2 Data 1</td>
-            <td>Row 2 Data 2</td>
-        </tr>
-    </tbody>
-</table>
 
+<div class="nav">
+    <!-- <div class="dropdown">
+        <small>Order by</small>
+        <select name="" id="">
+            <option value="">option 1</option>
+            <option value="">option 2</option>
+            <option value="">option 3</option>
+        </select>
+    </div> -->
+    <button class="pending">
+        <i class="fa-solid fa-user-group"></i>
+        <span>Pending Request</span>
+    </button>
+    <button class="add">
+        <i class="fa-solid fa-user-plus"></i>
+        <span>Add Member</span>
+    </button>
+</div>
+
+
+<table id="studentTable" style="width:100%">
+        <thead>
+            <tr>
+                <th>Student ID</th>
+                <th>Student Name</th>
+                <th>Settings</th>
+
+                <!-- Add more columns if needed -->
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Table body will be populated dynamically -->
+        </tbody>
+    </table>
 
 <?php
     echo '

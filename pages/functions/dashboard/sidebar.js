@@ -35,10 +35,57 @@ $(document).ready(function () {
 function showMember()
 {
     $("#content-show").load("../contents/dist/member.php", {ismember: "yes"}, function(){
-        $("#member").fadeOut(0).fadeIn(500);
+        $("#board").fadeOut(0).fadeIn(500);
+        fetch_tableData();
     });
+   
 }
 
+function fetch_tableData()
+{
+    
+    $('#studentTable').DataTable({
+        "paging":   false,
+        "ordering": false,
+        "info":     false,
+        "ajax": {
+            "url": "../contents/dist/fetch_all_student.php", // Endpoint to fetch data from server
+            "dataSrc": "data" // JSON property containing the data array
+        },
+        "columns": [{
+                "data": "assocto"
+            }, // Assuming 'studid' is the student ID column name from studentreg
+            {
+                "data": "full_name",
+            }, // Assuming 'allstudFname' is the student name column name from overallstudent
+            {
+                "data": null,
+                "render": function(data, type, row) {
+                    return '<button style="background-color: red; padding: 3px 20px; fontsize:medium; color: white; border-radius: 5px;" onclick="deleteStudent(\'' + row.assocto + '\')">Delete</button>';
+                }
+            },
+        ]
+    });
+    
+
+function deleteStudent(studentId) {
+    if (confirm("Are you sure you want to delete this student?")) {
+        $.ajax({
+            url: '../contents/dist/delete_student.php',
+            method: 'POST',
+            data: {
+                studentId: studentId
+            },
+            success: function(response) {
+                $('#studentTable').DataTable().ajax.reload();
+            },
+            error: function(xhr, status, error) {
+                console.error('Error deleting student:', error);
+            }
+        });
+    }
+}
+}
 
 // THIS IS FOR CALENDAR BUTTON (SIDEBAR)..
 $(document).ready(function () {
@@ -107,3 +154,5 @@ function getPinned_Projects()
 {
     $("#pinned").load("../contents/dist/pinned_proj.php", {getPinned: "yes"})
 }
+
+
