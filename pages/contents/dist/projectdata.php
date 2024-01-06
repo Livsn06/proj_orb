@@ -2,6 +2,12 @@
 
 if(isset($_POST['getDetails'])){
     
+    session_start();
+    $projectID = $_SESSION['setProject'];
+
+    require "../../../config/config.php";
+    $sql = "SELECT * FROM task WHERE projectID ='$projectID' ";
+    $res = $conn->query($sql);
 
     echo '
 <main class="project-settings" id="p-settings">
@@ -32,53 +38,56 @@ if(isset($_POST['getDetails'])){
                 </tr>
             </thead>
             <tbody>
+';
 
+if($res -> num_rows > 0){
+
+    while($row = $res -> fetch_array()){
+            echo '
                 <tr class="project-task">
-                    <td class="fulltask">
-                        <div class="task-details">
-                            <div>
-                                <small>#1</small>
-                                <small>Task name</small>
-                            </div>
-                            <div class="tasks" id="progress-task">
-
-                                <!-- THIS IS AJAX -->
-                               <div class="cb-input subtask">
-                                    <input class="check" type="checkbox" value="" onclick="this.checked=!this.checked;" > 
-                                    <small>subtask</small>
-                               </div>
-                            </div>
+                <td class="fulltask">
+                    <div class="task-details">
+                        <div>
+                            <small>#'.$row[0].'</small>
+                            <small>'.$row[2].'</small>
                         </div>
+                        <div class="tasks" id="progress-task">
+
+                        '.getSubtaskProgressCHECK($row[0]).'
                         
-                    </td>
+                        </div>
+                    </div>
                     
+                </td>
+            ';
+
+
+ echo '                   
                     <td class="task-user">
                         <div class="tuser-prof">
-                            <img src="default_Userprofile.png" alt="profile">
-                            <small>James Harder</small>
+                            <img src="../images/default_Userprofile.png" alt="profile">
+                            <small>'.getname($row[4]).'</small>
                         </div>
                     </td>
 
                     <td class="task-status">
                         <div class="tstatus">
-                            <small>DONE</small>
+                            <small>'.$row[5].'</small>
                         </div>
                     </td>
 
                     <td class="task-due">
                         <div class="task-duedate">
-                            <small>Dec 18, 2024 At 05:20pm</small>
+                            <small>'.$row[6].'</small>
                         </div>
                     </td>
 
-                    <td class="task-progbar">
-                        <div class="task-progress">
-                            <div class="outter-bar">
-                                <div class="inner-bar" style="width: 35%;"></div>
-                            </div>
-                            <small class="percenttxt">10%</small>
-                        </div>  
-                    </td>
+                    '.getSubtaskProgress( $row[0]).'
+';
+    }
+}
+
+echo '
                 </tr>
             </tbody>
         </table>
@@ -88,4 +97,106 @@ if(isset($_POST['getDetails'])){
 }
 
 
+
+
+?>
+
+
+<?php
+
+function getname($id)
+{
+    $id = trim(strtoupper($id));
+    require "../../../config/config.php";
+
+    $sntx = "SELECT r.studid, CONCAT(allstudfname,' ', allstudlname)  AS fullname FROM studentreg r INNER JOIN overallstudent o ON o.allstudid= r.studid 
+    WHERE r.studid = '$id'";
+    $result = $conn -> query($sntx);
+
+    if($result -> num_rows > 0){
+      while($row = $result -> fetch_assoc()){
+          $result->free();
+          $conn -> close();
+          return $row['fullname'];
+      }
+  }
+    $result->free();
+    $conn -> close();
+}
+
+
+
+function getSubtaskProgress( $taskid)
+{
+
+    require "../../../config/config.php";
+    $sql = "SELECT ststatus FROM subtasks WHERE taskid ='$taskid'";
+    $sql2 = "SELECT ststatus FROM subtasks WHERE taskid ='$taskid' AND ststatus <> 'undone'";
+    $res = $conn->query($sql);
+    $res2 = $conn->query($sql2);
+  
+    $tno =0;
+    $tdone =0;
+    $percent =0;
+
+    if($res -> num_rows > 0){
+        $tno = 100 / $res -> num_rows;
+        $tdone = $res2 -> num_rows;
+        $percent = $tno * $tdone > 100? 100 : $tno * $tdone;
+    }
+
+    $res -> free();
+    $res2 -> free();
+    $conn -> close();
+
+    return '
+    <td class="task-progbar">
+        <div class="task-progress">
+            <div class="outter-bar">
+                <div class="inner-bar" style="width: '.$percent.'%;"></div>
+            </div>
+            <small class="percenttxt">'.$percent.'%</small>
+        </div>  
+    </td>
+    ';
+
+}
+
+
+
+function getSubtaskProgressCHECK( $taskid)
+{
+
+    require "../../../config/config.php";
+    $sql2 = "SELECT stname, ststatus FROM subtasks WHERE taskid ='$taskid'";
+    $res = $conn->query($sql2);
+
+    $val = "";
+    if($res -> num_rows > 0){
+        while($row = $res ->fetch_assoc()){
+
+            if($row['ststatus'] != "undone"){
+                $val .= '
+                <div class="cb-input subtask">
+                    <input class="check" type="checkbox" value="" onclick="this.checked=!this.checked;" checked> 
+                    <small>'.$row['stname'].'</small>
+                </div>
+                ';
+            }else{
+                $val .= '
+                <div class="cb-input subtask">
+                    <input class="check" type="checkbox" value="" onclick="this.checked=!this.checked;" > 
+                    <small>'.$row['stname'].'</small>
+                </div>
+                ';
+            }
+
+            }
+    }
+    
+
+    $res -> free();
+    $conn -> close();
+    return $val;
+}
 ?>

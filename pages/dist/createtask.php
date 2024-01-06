@@ -61,7 +61,7 @@ if(empty($_SESSION['setProject'])){
 
                 <div class="subtasks">
                         <label for="subTask1">SUBTASK 1</label>
-                        <input type="text" name="subTask1" id="subTask1">
+                        <input type="text" name="subTask1" id="subTask1" required>
 
                         <label for="subTask2">SUBTASK 2</label>
                         <input type="text" name="subTask2" id="subTask2">
@@ -80,7 +80,7 @@ if(empty($_SESSION['setProject'])){
                 <!-- Repeat the above block for subTask2 to subTask5 -->
 
                     <label for="assignedTo">ASSIGNED TO</label>
-                    <select name="assignedTo" id="assignedTo" required>
+                    <select name="assignedTo[]" id="assignedTo" required>
                         <?php
                             get_Students();
                         ?>
@@ -106,7 +106,6 @@ if(empty($_SESSION['setProject'])){
 
 <?php
 
-
     if(isset($_POST['taskName']) && 
     isset($_POST['dueDate']))
     {
@@ -127,7 +126,35 @@ if(empty($_SESSION['setProject'])){
         $syntax = "INSERT INTO task (projectid, taskname, assignby, assignto, duedate) 
         VALUES ('$projid', '$taskname ', '$assignby', '$assignto', '$due')";
         $conn -> query($syntax);
+        $conn -> close();
 
+
+            if(!empty($_POST['subTask1'])){
+                insertSUBTASK($_POST['subTask1'], $assignto);
+            }
+            if(!empty($_POST['subTask2'])){
+                insertSUBTASK($_POST['subTask2'], $assignto);
+            }
+            if(!empty($_POST['subTask3'])){
+                insertSUBTASK($_POST['subTask3'], $assignto);
+            }
+            if(!empty($_POST['subTask4'])){
+                insertSUBTASK($_POST['subTask4'], $assignto);
+            }
+            if(!empty($_POST['subTask5'])){
+                insertSUBTASK($_POST['subTask5'], $assignto);
+            }
+
+
+    }
+
+    function insertSUBTASK ($name, $to)
+    {
+        $taskid = getTask();
+        require "../../config/config.php";
+        $syntax = "INSERT INTO subtasks (taskid, stname, stassignto, ststatus) VALUES ('$taskid', '$name ', '$to', 'undone')";
+        $conn -> query($syntax);
+        $conn -> close();
     }
 
     function getSelected_Data($column)
@@ -197,4 +224,21 @@ if(empty($_SESSION['setProject'])){
         $result->free();
         $conn -> close();
     }
+
+function getTask()
+{
+    require "../../config/config.php";
+    $projid = $_SESSION['setProject'];
+    $sql = "SELECT taskid FROM task WHERE projectid ='$projid'";
+    $res = $conn->query($sql);
+    $val = "";
+    if($res -> num_rows > 0){
+        while($data = $res -> fetch_assoc()){
+           $val =  $data['taskid'];
+        }
+    }
+    $res -> free();
+    $conn -> close();
+    return $val;
+}
 ?>
