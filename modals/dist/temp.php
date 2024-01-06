@@ -1,7 +1,7 @@
 <?php
-if (isset($_POST['getCreate'])) {
+if(isset($_POST['getCreate'])){
 
-    echo '
+echo '
 <section class="" id="createBoardmodal">
             <main class="inner-body">
                 <button class="tap-outside" id="exit-outside"></button>
@@ -44,82 +44,33 @@ if (isset($_POST['getCreate'])) {
 
 
 <?php
-
-
-if (isset($_POST['insertProject'])) {
-    session_start();
-    $title = trim($_POST['ptitle']);
-    $cover = $_FILES['file'];
-    $due = trim($_POST['pdue']);
-    $userid =  returnUserID($_SESSION['instrLogin']);
-
-    require "../../config/config.php";
-
-    if (!empty($title) && !($cover == null) && !empty($due)) {
-        $path = upload_Cover($cover);
-
-        $stx = "INSERT INTO project (projectname, projectcover, projectdue, instrid) VALUES ('$title', '$path', '$due', '$userid')";
-
-        if ($conn->query($stx)) {
-            $projID = $conn->insert_id;
-            $room_set = set_room_id($projID);
-            if (!$room_set) {
-                echo "Error setting room ID for the user.";
-            }
-        }
-    }
-}
-
-
-function set_room_id($id): bool
+if(isset($_POST['insertProject']))
 {
-    require "../../config/config.php";
+    session_start();
+   $title = trim($_POST['ptitle']);
+   $cover = $_FILES['file'];
+   $due = trim($_POST['pdue']);
+   $userid =  returnUserID($_SESSION['instrLogin']);
+  
 
-    $management_token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE3MDQ1NjgxMzMsImV4cCI6MTcwNDY1NDUzMywianRpIjoiand0X25vbmNlIiwidHlwZSI6Im1hbmFnZW1lbnQiLCJ2ZXJzaW9uIjoyLCJuYmYiOjE3MDQ1NjgxMzMsImFjY2Vzc19rZXkiOiI2NTc0MzBmNWNkOTkzZGZiNDRhYTQ5MDMifQ.Gp_Rv6yEEXrjjxpc_KkPYISD-9yeLRJoaIVAIgbd4g8';
+   require "../../config/config.php";
 
-    $url = 'https://api.100ms.live/v2/rooms';
-    $templateId = '65796a86a8c1fb92568b1704';
-
-    $data = array(
-        'name' => $id . "-room",
-        'description' => 'This is a sample description for the room',
-        'template_id' => $templateId
-    );
-
-    $headers = array(
-        'Authorization: Bearer ' . $management_token,
-        'Content-Type: application/json'
-    );
-
-    $ch = curl_init($url);
-
-    curl_setopt($ch, CURLOPT_POST, 1);
-    curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
-    curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-
-    $response = json_decode(curl_exec($ch), true);
-
-    if (curl_errno($ch)) {
-        echo 'Error: ' . curl_error($ch);
-        curl_close($ch);
-        return false;
+    if(!empty($title) && !($cover == null) && !empty($due))
+    {
+        $path = upload_Cover($cover);
+       
+        $stx = "INSERT INTO project (projectname, projectcover, projectdue, instrid) VALUES ('$title', '$path', '$due', '$userid')";
+        $conn->query($stx);  
     }
-
-    $room_id = $response['id'];
-
-    curl_close($ch);
-
-    $updateQuery = "UPDATE project SET roomName = '$room_id' WHERE projectID = '$id'";
-
-    $result = $conn->query($updateQuery);
-    if (!$result) {
-        echo "Error: " . $conn->error;
-        return false;
-    }
-
-    return true;
 }
+
+
+
+
+
+
+
+
 
 
 function upload_Cover($coverfile)
@@ -140,13 +91,13 @@ function returnUserID($useremail)
     $stx = "SELECT instrid FROM instructorreg WHERE instremail = '$useremail'";
 
     $res = $conn->query($stx);
-
-    if ($res->num_rows > 0) {
-        foreach ($res as $row) {
+    
+    if($res ->num_rows > 0){
+        foreach($res as $row){
             $res->free();
             $conn->close();
             return $row['instrid'];
-        }
+        }    
     }
     $res->free();
     $conn->close();
