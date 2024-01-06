@@ -27,18 +27,17 @@ if(isset($_POST['isboard'])){
     </div>
 
     <div class="cards" id="prj-crds">';
+    
+        echo '      
+        <div id="create-proj">
+            <button id="newproj" value="">
+                Create board
+                <i class="fa-regular fa-plus fa-lg create-icon "></i>
+            </button>
+        </div>
+    ';
 
     if ($res->num_rows > 0) {
-
-        echo '      
-            <div id="create-proj">
-                <button id="newproj" value="">
-                    Create board
-                    <i class="fa-regular fa-plus fa-lg create-icon "></i>
-                </button>
-            </div>
-        ';
-    
         while($row = $res->fetch_assoc()) 
         {
             echo getCards ($row['projectid'], $email);

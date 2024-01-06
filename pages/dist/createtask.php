@@ -51,7 +51,7 @@ if(empty($_SESSION['setProject'])){
         </header>
 
 <section class="create-task">
-    <form method="$_POST" action="createtask.php">
+    <form method="post" action="createtask.php">
         <label for="taskName">TASK NAME</label>
         <input type="text" name="taskName" id="taskName" required>
 
@@ -108,15 +108,18 @@ if(empty($_SESSION['setProject'])){
 
 
     if(isset($_POST['taskName']) && 
-    isset($_POST['dueDate']) && 
-    isset($_POST['subTask1']) &&
-    isset($_POST['assignedTo']))
+    isset($_POST['dueDate']))
     {
-        echo "active";
+
+        $assignto = "";
+        foreach($_POST['assignedTo'] as $val){
+            $assignto = $val;
+        }
+
         require "../../config/config.php";
         $taskname = $_POST['taskName'];
         $due = $_POST['dueDate'];
-        $assignto = $_POST['assignedTo'];
+  
         $taskname = $_POST['taskName'];
         $assignby = getSelected_Data('instrid');
         $projid = $_SESSION['setProject'];
