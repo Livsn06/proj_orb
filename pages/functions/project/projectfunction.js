@@ -42,3 +42,37 @@ function addvalproj(id)
 
 
 
+$(document).ready(function () {
+
+    $(document).on("click", "#g-btn", function () {
+        addGrades($("#grade-txt").val());
+    });
+});
+
+function addGrades(grades)
+{
+    $("#content-show").load("../contents/dist/grades.php", {addGrades: grades},
+        function (data) {
+            location.reload();
+        },
+    );
+}
+
+
+
+$(document).ready(function () {
+
+    $(document).on("click", "#fb-btn", function () {
+        addfeedback($("#feedback-txt").val());
+    });
+});
+
+function addfeedback(feedback)
+{
+    $("#content-show").load("../contents/dist/grades.php", {addFeedback: feedback},
+        function (data) {
+            location.reload();
+        },
+    );
+}
+

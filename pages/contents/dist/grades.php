@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
 
 <style>
 
@@ -46,14 +46,15 @@
 </head>
 <body>
 
-    <div class="container mt-5">
+    <div class="grades">
         <table class="table">
             <thead>
                 <tr>
-                    <th>Due Name</th>
+
                     <th>Project Name</th>
-                    <th>Feedback</th>
+                    <th>Due</th>
                     <th>Grade</th>
+                    <th>Feedback</th>
                 </tr>
             </thead>
             <tbody>
@@ -69,10 +70,10 @@
                     // Display data in HTML table
                     while ($row = $result->fetch_assoc()) {
                         echo "<tr>";
-                        echo "<td>" .datetimeFormatter($row['projectDue']) . "</td>"; // Correct column name
-                        echo "<td>" . $row['projectName'] . "</td>"; // Correct column name
-                        // echo "<td>" . $row['feedback'] . "</td>"; 
-                        // echo "<td>" . $row['grade'] . "</td>"; 
+                        echo "<td>" . getProjectName() . "</td>"; // Correct column name
+                        echo "<td>" . datetimeFormatter(getProjectDue()) . "</td>"; // Correct column name
+                        echo "<td>" . getgradeGrade() . "/100</td>"; 
+                        echo "<td>" . getgradefeedback() . "</td>"; 
                         echo "</tr>";
                     }
                     // Close connection
@@ -80,23 +81,24 @@
                 ?>
             </tbody>
         </table>
-        <div class="container mt-5">
-        <div class="row">
-            <div class="col-md-6">
-                <label for="feedback">Feedback</label>
-                <input type="text" name="feedback" id="feedback" class="form-control">
-                <input type="button" class="btn btn-primary" value="ADD FEEDBACK">
-            </div>
-            <div class="col-md-6">
+        
+    <div class="feedbacks">
+
+            <div class="grade">
                 <label for="grade">Grade</label>
-                <input type="number" name="grade" id="grade" class="form-control">
-                <input type="button" class="btn btn-primary" value="ADD GRADE">
+                <input type="number" name="grade" id="grade-txt" class="form-control">
+                <button type="button" id="g-btn">Add Grade</button>
             </div>
-        </div>
+
+            <div class="feedback">
+                <label for="feedback">Feedback</label>
+                <textarea id="feedback-txt" cols="30" rows="2"></textarea>
+                <button type="button" id="fb-btn">Add Feedback</button>
+            </div>
+
     </div>
 
-
-    </div>
+</div>
 
 </body>
 </html>
@@ -111,4 +113,100 @@ function datetimeFormatter($datetimeString)
     return $formattedDatetime;
 }
 
+
+if(isset($_POST['addFeedback'])){
+
+    require "../../../config/config.php";
+    $pid = $_SESSION['setProject'];
+    $msg = $_POST['addFeedback'];
+
+    if(getgradefeedback() == "No Feedback"){
+        $sql = "INSERT INTO gradefeedback (projid, fbmessage) VALUES ('$pid', '$msg')";
+        $conn->query($sql);
+    }else{
+        $sql = "UPDATE gradefeedback SET projid = '$pid', fbmessage = '$msg'";
+        $conn->query($sql);
+    }
+
+
+}
+
+if(isset($_POST['addGrades'])){
+
+    require "../../../config/config.php";
+    $pid = $_SESSION['setProject'];
+    $grade = $_POST['addGrades'];
+
+    if(getgradeGrade() == "No Grades"){
+        $sql = "INSERT INTO grades (projid, points) VALUES ('$pid', '$grade')";
+        $conn->query($sql);
+    }else{
+        $sql = "UPDATE grades SET projid = '$pid', points = '$grade'";
+        $conn->query($sql);
+    }
+
+}
+
+
+
+function getProjectName()
+{
+    $pid = $_SESSION['setProject'];
+    require "../../../config/config.php";
+    $stx = "SELECT projectname FROM project WHERE projectid = '$pid'";
+    $res = $conn->query($stx);
+    while($row = $res -> fetch_assoc()){
+        $res -> free();
+        $conn->close();
+        return $row['projectname'];
+    }
+
+}
+function getProjectDue()
+{
+    $pid = $_SESSION['setProject'];
+    require "../../../config/config.php";
+    $stx = "SELECT projectdue FROM project WHERE projectid = '$pid'";
+    $res = $conn->query($stx);
+    while($row = $res -> fetch_assoc()){
+        $res -> free();
+        $conn->close();
+        return $row['projectdue'];
+    }
+}
+function getgradefeedback()
+{
+    $pid = $_SESSION['setProject'];
+    require "../../../config/config.php";
+    $stx = "SELECT fbmessage FROM gradefeedback WHERE projid = '$pid'";
+    $res = $conn->query($stx);
+    if($res -> num_rows > 0){
+        while($row = $res -> fetch_assoc()){
+            $res -> free();
+            $conn->close();
+            return $row['fbmessage'];
+        }
+    }
+    $res -> free();
+    $conn->close();
+    return "No Feedback";
+}
+function getgradeGrade()
+{
+    $pid = $_SESSION['setProject'];
+    require "../../../config/config.php";
+    $stx = "SELECT points FROM grades WHERE projid = '$pid'";
+    $res = $conn->query($stx);
+    if($res -> num_rows > 0){
+        while($row = $res -> fetch_assoc()){
+            $res -> free();
+            $conn->close();
+            return $row['points'];
+        }
+    }
+    $res -> free();
+    $conn->close();
+    return "No Grades";
+    
+}
 ?>
