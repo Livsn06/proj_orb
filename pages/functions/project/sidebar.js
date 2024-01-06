@@ -56,21 +56,21 @@ function showFiles()
 
 
 
-// THIS IS FOR CALENDAR BUTTON (SIDEBAR)..
+// THIS IS FOR GRADES BUTTON (SIDEBAR)..
 $(document).ready(function () {
     $("#navpgrades").click(function (e) { 
         e.preventDefault();
         selectedButton ("G");
-        showCalendar();
+        showGrades();
         getPinned_Projects();;
     });
 });
 
 //show calendar contents
-function showCalendar()
+function showGrades()
 {
-    $("#content-show").load("../contents/dist/calendar.php", {iscalendar: "yes"}, function(){
-        $(" #calendar").fadeIn(500);
+    $("#content-show").load("../contents/dist/grades.php", {isgrades: "yes"}, function(){
+        
     })
 }
 

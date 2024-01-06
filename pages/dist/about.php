@@ -69,10 +69,8 @@ p {
     <header class="header">
         <img src="../images/logo.png" alt="" class="logo">
         <div class="links">
-            <li><a href="">Home</a></li>
-            <li><a href="">About</a></li>
-            <li><a href="">Contact</a></li>
-            <li class="login"><a id="vanlogin">Login</a></li>
+            <li><a href="about.php" target="_blank">About</a></li>
+            <li><a href="contact.php" target="_blank">Contact</a></li>
         </div>  
     </header>
     <div id="modal"></div>

@@ -94,8 +94,10 @@ if(isset($_SESSION['studLogin'])){
                    </button>
                    <button class="" id="navmember" value="showmember">
                    <i class="fa-solid fa-user-group fa-lg icon "></i>
-                        People
+                        Student
                    </button>
+
+                   <!-- GRADE BUTTON -->
                    <button class="" id="navcalendar" value="showcalendar">
                    <i class="fa-solid fa-calendar-days fa-lg icon"></i>
                         Calendar
