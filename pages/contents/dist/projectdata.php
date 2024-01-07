@@ -243,14 +243,14 @@ function getSubtaskProgressCHECK($taskid)
                 if ($row['ststatus'] != "undone") {
                     $val .= '
                     <div class="cb-input subtask">
-                        <input class="check" type="checkbox" value="'.$row['stid'].'" checked> 
+                        <input class="check CHECKING" type="checkbox" value="'.$row['stid'].'" checked> 
                         <small>' . $row['stname'] . '</small>
                     </div>
                     ';
                 } else {
                     $val .= '
                     <div class="cb-input subtask">
-                        <input class="check" type="checkbox" value="'.$row['stid'].'" > 
+                        <input class="check CHECKING" type="checkbox" value="'.$row['stid'].'" > 
                         <small>' . $row['stname'] . '</small>
                     </div>
                     ';

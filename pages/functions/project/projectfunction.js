@@ -77,7 +77,7 @@ function addfeedback(feedback)
 }
 
 
-$(document).on("click", ".cb-input .check", function () {
+$(document).on("click", ".cb-input .CHECKING", function () {
    $.post("../contents/dist/updatetask.php", {updatestatus: $(this).val()},
     function (data) {
         $("#content-show").load("../contents/dist/projectdata.php", {getDetails: "yes"}, function(){
