@@ -9,16 +9,24 @@ $(document).ready(function () {
         showBoard();
         getPinned_Projects();
     });
+    $(document).on("click","#searchp",function (e) { 
+        e.preventDefault();
+        selectedButton ("B");
+        showBoardSearch();
+        getPinned_Projects();
+    });
  
 });
 
 //show board contents
 function showBoard()
 {
+
     $("#content-show").load("../contents/dist/board.php", {isboard: "yes"}, function(){
         $("#board").fadeOut(0).fadeIn(500);
     });
 }
+
 
 
 // THIS IS FOR MEMBER BUTTON (SIDEBAR)..
