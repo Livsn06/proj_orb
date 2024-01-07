@@ -1,20 +1,21 @@
-<?php
-if(isset($_POST['iscalendar'])){
-
-    echo '
-    <div id="calendar" ></div>
+<!DOCTYPE html>
+<html>
+  <head>
+ <link rel="stylesheet" href=" https://cdn.jsdelivr.net/npm/fullcalendar@6.1.10/index.global.min.js">
+    <script src='https://cdn.jsdelivr.net/npm/fullcalendar/index.global.min.js'></script>
     <script>
 
-    document.addEventListener(\'DOMContentLoaded\', function() {
-    var calendarEl = document.getElementById(\'calendar\');
-    var calendar = new FullCalendar.Calendar(calendarEl, {
-    initialView: \'dayGridMonth\'
-    });
-    calendar.render();
-    });
+      document.addEventListener('DOMContentLoaded', function() {
+        const calendarEl = document.getElementById('calendar')
+        const calendar = new FullCalendar.Calendar(calendarEl, {
+          initialView: 'dayGridMonth'
+        })
+        calendar.render()
+      })
 
     </script>
-    ';
-}
-
-?>
+  </head>
+  <body>
+    <div id='calendar'></div>
+  </body>
+</html>
