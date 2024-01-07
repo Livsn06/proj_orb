@@ -5,9 +5,12 @@
     // if  log in ung session ng instructor page babalik sa dashboard page
     if(isset($_SESSION['instrLogin'])){
         header("Location: dashboard.php");
+    }else 
+    if(isset($_SESSION['studLogin'])){
+        header("Location: studentside.php");
     }
     
-?>
+?>  
 <!DOCTYPE html>
 <html lang="en">
 <head>

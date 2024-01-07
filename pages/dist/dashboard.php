@@ -8,7 +8,7 @@ if(!isset($_SESSION['instrLogin'])){
 }
 // if not log in as instructor pero naka log in as student babalik sya sa student homepage
 if(isset($_SESSION['studLogin'])){
-    header("Location: home.php");
+    header("Location: studentside.php");
 }
 ?>
 
@@ -97,11 +97,13 @@ if(isset($_SESSION['studLogin'])){
                         Student
                    </button>
 
-                   <!-- GRADE BUTTON -->
-                   <button class="" id="navcalendar" value="showcalendar">
-                   <i class="fa-solid fa-calendar-days fa-lg icon"></i>
-                        Calendar
-                   </button>
+       
+                   <a href="showcalendar.php" target="_blank" class="linkcal">
+                        <button class="" id="" value="showcalendar">
+                        <i class="fa-solid fa-calendar-days fa-lg icon"></i>
+                                Calendar
+                        </button>
+                   </a>
                 </div>
                 
                 <hr class="line">
@@ -127,7 +129,6 @@ if(isset($_SESSION['studLogin'])){
 
     function getSelected_Data($column)
     {
-
         require "../../config/config.php";
        
         $email = $_SESSION['instrLogin'];

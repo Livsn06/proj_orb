@@ -81,7 +81,19 @@
 function getUser($projID)
 {
     require "../../../config/config.php";
-    $stx = "SELECT instrid FROM project WHERE projectid = '$projID'";
+
+    session_start();
+    $stx = "";
+    $col = "";
+    if(isset($_SESSION['instrLogin'])){
+        $stx = "SELECT instrid FROM project WHERE projectid = '$projID'";
+        $col = "instrid";
+    }else{
+        $email = $_SESSION['studLogin'];
+        $stx = "SELECT studid FROM studentreg WHERE studemail = '$email'";
+        $col = "studid";
+    }
+   
     $res = $conn->query($stx);
 
     if ($res->num_rows > 0) {
@@ -89,10 +101,11 @@ function getUser($projID)
         {
             $res->close();
             $conn->close();
-            return $row['instrid'];
+            return $row[$col];
         }
     }
     $res->free();
+    $conn->close();
 }
 
 

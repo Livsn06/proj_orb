@@ -76,3 +76,12 @@ function addfeedback(feedback)
     );
 }
 
+
+$(document).on("click", ".cb-input .check", function () {
+   $.post("../contents/dist/updatetask.php", {updatestatus: $(this).val()},
+    function (data) {
+        $("#content-show").load("../contents/dist/projectdata.php", {getDetails: "yes"}, function(){
+            $("#p-settings").fadeOut(0).fadeIn(500);
+        });
+    });
+});

@@ -67,7 +67,6 @@ if(!isset($_SESSION['studLogin'])){
                         </div>
                 </header>
 
-
             <section class="inner-contents" id="content-show">
       
             <!-- !CONTENTS SHOW -->
@@ -98,10 +97,12 @@ if(!isset($_SESSION['studLogin'])){
                    </button> -->
 
                    <!-- GRADE BUTTON -->
-                   <button class="" id="navcalendar" value="showcalendar">
-                   <i class="fa-solid fa-calendar-days fa-lg icon"></i>
-                        Calendar
-                   </button>
+                   <a href="showcalendar.php" target="_blank" class="linkcal">
+                        <button class="" id="" value="showcalendar">
+                        <i class="fa-solid fa-calendar-days fa-lg icon"></i>
+                                Calendar
+                        </button>
+                   </a>
                 </div>
                 
                 <hr class="line">

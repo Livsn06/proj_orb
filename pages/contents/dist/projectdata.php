@@ -12,13 +12,21 @@ if (isset($_POST['getDetails'])) {
     echo '
 <main class="project-settings" id="p-settings">
     <div class="p-nav">
+';
 
-        <a href="createtask.php">
-            <button class="p-btns create-task" id="create-task-btn">
-                <i class="fa-solid fa-file-invoice"></i>
-                <span>Create task</span>
-            </button>
-        </a>
+if($_SESSION['instrLogin']){
+    echo'
+    <a href="createtask.php">
+    <button class="p-btns create-task" id="create-task-btn">
+        <i class="fa-solid fa-file-invoice"></i>
+        <span>Create task</span>
+    </button>
+    </a>
+';
+}
+
+
+    echo'
         <a href="https://darcmattz-videoconf-1719.app.100ms.live/meeting/hsq-uyvk-feg" target="_blank">
             <button class="p-btns meet">
                 <i class="fa-solid fa-video"></i>
@@ -71,9 +79,7 @@ if (isset($_POST['getDetails'])) {
                     </td>
 
                     <td class="task-status">
-                        <div class="tstatus">
-                            <small>' . $row[5] . '</small>
-                        </div>
+                        '.getSubtaskStatus($row[0]).'
                     </td>
 
                     <td class="task-due">
@@ -149,6 +155,8 @@ function getSubtaskProgress($taskid)
     $res2->free();
     $conn->close();
 
+    $percent = intval($percent);
+
     return '
     <td class="task-progbar">
         <div class="task-progress">
@@ -161,34 +169,94 @@ function getSubtaskProgress($taskid)
     ';
 }
 
+function getSubtaskStatus($taskid)
+{
+
+    require "../../../config/config.php";
+    $sql = "SELECT ststatus FROM subtasks WHERE taskid ='$taskid'";
+    $sql2 = "SELECT ststatus FROM subtasks WHERE taskid ='$taskid' AND ststatus <> 'undone'";
+    $res = $conn->query($sql);
+    $res2 = $conn->query($sql2);
+
+    $tno = 0;
+    $tdone = 0;
+    $percent = 0;
+
+    if ($res->num_rows > 0) {
+        $tno = 100 / $res->num_rows;
+        $tdone = $res2->num_rows;
+        $percent = $tno * $tdone > 100 ? 100 : $tno * $tdone;
+    }
+
+    $res->free();
+    $res2->free();
+    $conn->close();
+
+    $percent = intval($percent);
+    
+    
+    if($percent < 100){
+        return '
+        <div class="tstatus" style="background-color: orange;">
+            <small>In Progress</small>
+        </div>
+        ';
+   }else{
+
+        return '
+        <div class="tstatus" style="background-color: #25B4B2;"">
+            <small> Done </small>
+        </div>
+        ';
+   }
+}
+
 
 
 function getSubtaskProgressCHECK($taskid)
 {
 
     require "../../../config/config.php";
-    $sql2 = "SELECT stname, ststatus FROM subtasks WHERE taskid ='$taskid'";
+    $sql2 = "SELECT stid, stname, ststatus FROM subtasks WHERE taskid ='$taskid'";
     $res = $conn->query($sql2);
 
     $val = "";
     if ($res->num_rows > 0) {
         while ($row = $res->fetch_assoc()) {
-
-            if ($row['ststatus'] != "undone") {
-                $val .= '
-                <div class="cb-input subtask">
-                    <input class="check" type="checkbox" value="" onclick="this.checked=!this.checked;" checked> 
-                    <small>' . $row['stname'] . '</small>
-                </div>
-                ';
-            } else {
-                $val .= '
-                <div class="cb-input subtask">
-                    <input class="check" type="checkbox" value="" onclick="this.checked=!this.checked;" > 
-                    <small>' . $row['stname'] . '</small>
-                </div>
-                ';
+            if(isset($_SESSION['instrLogin'])){
+                if ($row['ststatus'] != "undone") {
+                    $val .= '
+                    <div class="cb-input subtask">
+                        <input class="check" type="checkbox" value="'.$row['stid'].'" onclick="this.checked=!this.checked;" checked> 
+                        <small>' . $row['stname'] . '</small>
+                    </div>
+                    ';
+                } else {
+                    $val .= '
+                    <div class="cb-input subtask">
+                        <input class="check" type="checkbox" value="'.$row['stid'].'" onclick="this.checked=!this.checked;" > 
+                        <small>' . $row['stname'] . '</small>
+                    </div>
+                    ';
+                }
+            }else{
+                if ($row['ststatus'] != "undone") {
+                    $val .= '
+                    <div class="cb-input subtask">
+                        <input class="check" type="checkbox" value="'.$row['stid'].'" checked> 
+                        <small>' . $row['stname'] . '</small>
+                    </div>
+                    ';
+                } else {
+                    $val .= '
+                    <div class="cb-input subtask">
+                        <input class="check" type="checkbox" value="'.$row['stid'].'" > 
+                        <small>' . $row['stname'] . '</small>
+                    </div>
+                    ';
+                }
             }
+            
         }
     }
 

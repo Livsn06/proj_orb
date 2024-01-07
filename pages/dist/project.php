@@ -1,7 +1,12 @@
 <?php
 session_start();
 if(empty($_SESSION['setProject'])){
-    header("Location: dashboard.php");
+    if(isset($_SESSION['instrLogin'])){
+        header("Location: dashboard.php");
+    }else{
+        header("Location: studentside.php");
+    }
+
 }
 ?>
 
@@ -42,7 +47,9 @@ if(empty($_SESSION['setProject'])){
                         <div class="full-user" id="full-user">
                             <button class="pd-prof" id="user-btn">
                                 <img src="../images/default_Userprofile.png" alt="">
-                                <h6><?php echo getSelected_Data("instrlname")?></h6>
+                                <h6><?php 
+                                    echo isset($_SESSION['instrLogin'])?  getSelected_Data("instrlname") : getSelected_Student();
+                                ?></h6>
                                 <i class="fa fa-caret-down user-icon" aria-hidden="true"></i>
                             </button>
                         </div>
@@ -67,7 +74,7 @@ if(empty($_SESSION['setProject'])){
                     </button>
           
                 <a href="project.php"><button class="logo">
-                    <img src="<?php echo get_Projectdata('projectcover');?>" alt="">
+                    <img src="<?php  echo get_Projectdata('projectcover');  ?>" alt="">
                 </button></a>
                 
                 
@@ -87,10 +94,18 @@ if(empty($_SESSION['setProject'])){
                    <i class="fa-solid fa-calendar-days fa-lg icon"></i>
                         Files
                    </button>
-                   <button class="" id="navpgrades" value="showcalendar">
-                   <i class="fa-solid fa-receipt fa-lg icon"></i>
-                        Grades
-                   </button>
+
+                   <?php
+                    if(isset($_SESSION['instrLogin'])){
+                        echo '
+                        <button class="" id="navpgrades" value="showcalendar">
+                        <i class="fa-solid fa-receipt fa-lg icon"></i>
+                                Grades
+                        </button>
+                        ';
+                    }
+                   ?>
+
                 </div>
                 
             </aside>
@@ -128,6 +143,27 @@ if(empty($_SESSION['setProject'])){
         return "Username";
     }
 
+    function getSelected_Student()
+    {
+
+        require "../../config/config.php";
+       
+        $email = $_SESSION['studLogin'];
+        $sntx = "SELECT allstudlname  AS lname FROM studentreg r INNER JOIN overallstudent o ON o.allstudid=r.studid
+        WHERE r.studemail = '$email'";
+
+        $result = $conn -> query($sntx);
+        if($result -> num_rows > 0){
+            while($data = $result -> fetch_assoc()){
+                $result->free();
+                $conn -> close();
+                return $data['lname'];
+            }
+        }
+        $result->free();
+        $conn -> close();
+        return "Username";
+    }
 
 
     function get_Projectdata($column)

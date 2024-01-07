@@ -456,10 +456,20 @@ margin-bottom: 10px;
     font-weight: bold;
 }
 
+
+/* menu link */
+
+.linkcal{
+    width: 100%;
+    background-color: red;
+    text-decoration: none;
+}
+
 .menu button:hover{
     transition: all 200ms ease-in-out;
     background-color: #ffffff51;
     color: var(--white);
+    width: 100%;
 }
 
 .menu .selected{
@@ -467,11 +477,13 @@ margin-bottom: 10px;
     border-left: 4px solid var(--secondary);
     background-color: var(--hover);
     color: var(--secondary);
+    width: 100%;
 }
 .menu .selected:hover{
     border-left: 4px solid var(--secondary);
     background-color: var(--hover);
     color: var(--secondary);
+    width: 100%;
 }
 
 .menu button .icon {
