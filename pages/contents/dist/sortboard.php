@@ -1,87 +1,67 @@
 <?php
-if(isset($_POST['isboard'])){
-    session_start();
 
-    require "../../../config/config.php";
+if(isset($_POST['sortdata'])){
 
+$dd = $_POST['sortdata'];
+$sval = $_POST['seachval'];
 
-    $email = "";
-    $stx = "";
+  session_start();
+  require "../../../config/config.php";
+  $email = "";
+  $stx = "";
 
-    if(!empty($_SESSION['instrLogin'])){
-        $email = $_SESSION['instrLogin'];
+  if(!empty($_SESSION['instrLogin'])){
+      $email = $_SESSION['instrLogin'];
+      
+      if(!empty(trim($sval))){
+        $stx = "SELECT projectid FROM project WHERE projectname LIKE '$sval%' ORDER BY projectdate DESC ";
+      }else{
+        $stx = "SELECT projectid FROM project ORDER BY projectdate DESC ";
+      }
 
-        $stx = "SELECT projectid FROM project ORDER BY projectdate DESC";
-    }
+  }
 
-    if(!empty($_SESSION['studLogin'])){
-        $email = $_SESSION['studLogin'];
+  if(!empty($_SESSION['studLogin'])){
+      $email = $_SESSION['studLogin'];
 
+      if(!empty(trim($sval))){
+        $stx = "SELECT projtid FROM project_assigned INNER JOIN project ON projectid = projtid 
+        WHERE studid = '".getemail_ID()."' AND projectname LIKE '$sval%' ORDER BY projectdate DESC";
+      }else{
         $stx = "SELECT projtid FROM project_assigned INNER JOIN project ON projectid = projtid 
         WHERE studid = '".getemail_ID()."' ORDER BY projectdate DESC";
-    }
+      }
 
-
+  }
 
     $res = $conn->query($stx);
-
-    echo '
-    <main class="board" id="board">
-    <div class="sorter">
-        <div id="drop-sort" style="visibility: hidden;">
-            <label for="sort">Sort by</label>
-            <select name="" id="dropdown-sort" class="d-sort">
-                <option value="">--Default--</option>
-                <option value="">Day Created</option>
-                <option value="">Due Date</option>
-                <option value="">Alpabethically A-Z</option>
-            </select>
-        </div>
-
-        <div id="search-sort">
-            <button id="searchp"><i class="fa-solid fa-magnifying-glass"></i></button>
-            <input type="text" id="s-vals">
-        </div>
-    </div>
-
-    <div class="cards" id="prj-crds">';
     
+        
     if(!empty($_SESSION['instrLogin'])){
-         echo '      
-        <div id="create-proj">
-            <button id="newproj" value="">
-                Create board
-                <i class="fa-regular fa-plus fa-lg create-icon "></i>
-            </button>
-        </div>
-    ';
-    }
+        echo '      
+       <div id="create-proj">
+           <button id="newproj" value="">
+               Create board
+               <i class="fa-regular fa-plus fa-lg create-icon "></i>
+           </button>
+       </div>
+   ';
+   }
 
-      
     if ($res->num_rows > 0) {
+        
         while($row = $res->fetch_assoc()) 
         {
             echo (!empty($_SESSION['instrLogin']))? getCards ($row['projectid'], $email) : getCards ($row['projtid'], $email);
 
         }
-    
+
     }
 
-echo '
-    </div>
-</main>
-    
-    ';
 
-    $res -> free();
-    $conn -> close();
-        
 }
-
-
-
+  
 ?>
-
 
 
 
@@ -203,11 +183,5 @@ function getemail_ID()
 }
 
 
+
 ?>
-
-
-
-
-
-
-

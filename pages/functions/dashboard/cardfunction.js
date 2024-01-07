@@ -7,3 +7,14 @@ $(document).ready(function () {
        });
     });
 });
+
+
+
+$(document).ready(function () {
+    $(document).on("keyup","#s-vals",function () { 
+        var drpdown = $("#dropdown-sort").val();
+        var sval = $("#s-vals").val();
+        $("#board #prj-crds").load("../contents/dist/sortboard.php", {sortdata: drpdown , seachval: sval});
+        
+    });
+});
