@@ -4,6 +4,7 @@ if(isset($_POST['isboard'])){
     $email = $_SESSION['instrLogin'];
     require "../../../config/config.php";
 
+
     $stx = "SELECT projectid FROM project ORDER BY projectdate DESC";
     $res = $conn->query($stx);
 
@@ -21,8 +22,8 @@ if(isset($_POST['isboard'])){
         </div>
 
         <div id="search-sort">
-            <button><i class="fa-solid fa-magnifying-glass"></i></button>
-            <input type="text">
+            <button id="searchp"><i class="fa-solid fa-magnifying-glass"></i></button>
+            <input type="text" id="s-vals">
         </div>
     </div>
 
@@ -58,8 +59,8 @@ echo '
 
 
 
-
 ?>
+
 
 
 

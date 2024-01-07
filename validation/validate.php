@@ -24,7 +24,7 @@ if(isset($_POST['login'])){
                 showConfirmButton: false,
                 timer: 1500
               }).then(() => {
-                window.location.href = "home.php";
+                window.location.href = "studentside.php";
               });
             </script>
             ';
