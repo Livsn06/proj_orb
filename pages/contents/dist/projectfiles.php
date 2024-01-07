@@ -1,8 +1,5 @@
 <?php
 if(isset($_POST['getFiles'])){
-
-
-
     echo '
     <main class="project-files" id="p-files">
     <div class="nav">
@@ -27,3 +24,6 @@ if(isset($_POST['getFiles'])){
     ';
 }
 ?>
+
+
+

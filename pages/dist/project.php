@@ -98,7 +98,7 @@ if(empty($_SESSION['setProject'])){
                    <?php
                     if(isset($_SESSION['instrLogin'])){
                         echo '
-                        <button class="" id="navpgrades" value="showcalendar">
+                        <button class="" id="navpgrades" value="showcalendar" style="visibility: hidden;">
                         <i class="fa-solid fa-receipt fa-lg icon"></i>
                                 Grades
                         </button>

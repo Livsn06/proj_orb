@@ -481,7 +481,7 @@ if(isset($_POST['signup'])){
                     showConfirmButton: false,
                     timer: 1500
                 }).then(() => {
-                    window.location.href = "student.php";
+                    window.location.href = "studentside.php";
                 });
             </script>
             ';

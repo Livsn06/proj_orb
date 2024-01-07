@@ -35,8 +35,11 @@ function seachID(id)
 
 function addvalproj(id)
 {
-    $.post("../contents/dist/projectmember.php", {addstud: 'set', id: id}, function (data) {
-        location.reload();
+    $.post("../contents/dist/projectmember.php", {addstud: 'set', id: id}, function () {
+        $("#content-show").load("../contents/dist/projectmember.php", {getMembers: "yes"}, function(){
+            $("#p-member").fadeOut(0).fadeIn(500);
+            $("#paddmember").remove();
+        });
     });
 }
 

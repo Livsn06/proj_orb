@@ -1,8 +1,9 @@
 <?php
+    session_start();
 if(isset($_POST['getMembers'])){
 
     require "../../../config/config.php";
-    session_start();
+
     $pid = trim($_SESSION['setProject']);
     $sntx = " SELECT studid, task FROM project_assigned WHERE projtid = '$pid'";
     $result = $conn -> query($sntx);
@@ -32,7 +33,7 @@ if(isset($_POST['getMembers'])){
                 echo'
                 <tr>
                     <td>'.getname($row['studid']).'</td>
-                    <td>'.$row['task'].'</td>
+                    <td>'.getTask($row['studid']).'</td>
                 </tr>
             ';
             }
@@ -103,7 +104,6 @@ if(isset($_POST['addstud'])){
     
     addmember($id);
 
-
 }
 
 ?>
@@ -120,14 +120,18 @@ if(isset($_POST['addstud'])){
 
       if($result -> num_rows > 0){
         while($row = $result -> fetch_assoc()){
-            echo'
-            <div class="info">
-                <small>'.$row['studid'].'</small>
-                <small>'.$row['fullname'].'</small>
-                <button class="addedstud" value="'.$row['studid'].'">Add</button>
-            </div>
-    
-        ';
+
+            if(!isaddedmember($row['studid'])){
+                echo'
+                <div class="info">
+                    <small>'.$row['studid'].'</small>
+                    <small>'.$row['fullname'].'</small>
+                    <button class="addedstud" value="'.$row['studid'].'">Add</button>
+                </div>
+        
+            ';
+            }
+
         }
     }else{
         echo'
@@ -146,7 +150,6 @@ if(isset($_POST['addstud'])){
   function isaddedmember($id)
   {
     require "../../../config/config.php";
-    session_start();
     $pid = trim($_SESSION['setProject']);
     $sntx = " SELECT * FROM project_assigned WHERE projtid = '$pid' AND studid = '$id'";
     $result = $conn -> query($sntx);
@@ -167,7 +170,6 @@ if(isset($_POST['addstud'])){
   function addmember($id)
   {
     require "../../../config/config.php";
-    session_start();
     $pid = trim($_SESSION['setProject']);
     $sntx = " INSERT INTO project_assigned (projtid, studid) VALUES ('$pid','$id')";
     $conn -> query($sntx);
@@ -192,5 +194,27 @@ if(isset($_POST['addstud'])){
       $result->free();
       $conn -> close();
   }
+
+  function getTask($id)
+  {
+      require "../../../config/config.php";
+
+      $sntx = "SELECT taskname FROM task WHERE assignto = '$id'";
+      $result = $conn -> query($sntx);
+
+    if($result -> num_rows > 0){
+        while($row = $result -> fetch_assoc()){
+            $result->free();
+            $conn -> close();
+            return $row['taskname'];
+        }
+    }else{
+        $result->free();
+        $conn -> close();
+        return "<span style=\"color: red;\">not assigned</span>";
+    }
+  
+  }
  
 ?>
+
