@@ -11,19 +11,27 @@ if(isset($_POST['getFiles'])){
                 <option value="">Option 3</option>
             </select>
         </div>
-        <button>
+        <a href="choosefile.php" style="text-decoration: none;">
+            <button id="">
             <i class="fa-solid fa-folder-closed"></i>
             <span class="txt">Upload Files</span>
         </button>
+    </a>
     </div>
-    <div>
-        this is a folder sections
+    <div class="outer"> 
+        <div class="inner files">
+                <a href="#">
+                    <button>
+                        <i class="fa-solid fa-file"></i>
+                        <span>File name</span>
+                    </button>
+                </a>
+        </div>
     </div>
 </main>
 
     ';
 }
 ?>
-
 
 

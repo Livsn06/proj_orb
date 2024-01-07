@@ -921,52 +921,6 @@ thead tr th{
 
 
 
-/* FOR PROJECT FILES  */
-.project-files{
-    /* background-color: orange; */
-    max-height: 85vh;
-}
-
-.project-files .nav{
-    /* background-color: red; */
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    
-}
-
-.project-files .nav
-.selection{
-    color: var(--secondary);
-    display: flex;
-    align-items: flex-start;
-    justify-content: flex-start;
-    flex-direction: column;
-}
-.project-files .nav
-.selection select{
-    padding: 6px 10px;
-    width: 250px;
-    color: var(--secondary);
-    border-radius: 5px;
-    border: 2px solid var(--secondary);
-}
-
-.project-files .nav button{
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: var(--white);
-    padding: 8px 20px;
-    border-radius: 5px;
-    border-color: var(--hover);
-    background-color: var(--secondary);
-}
-.project-files .nav button .txt{
-    margin-left: 10px;
-}
-
 .addmember{
     position: absolute;
     z-index: 1111;
@@ -1159,5 +1113,108 @@ tbody tr td:last-child{
 
 
 
-/* FILES  */
+/* FOR PROJECT FILES  */
+.project-files{
+    /* background-color: orange; */
+    max-height: 85vh;
+}
 
+.project-files .nav{
+    /* background-color: red; */
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    
+}
+
+.project-files .nav
+.selection{
+    color: var(--secondary);
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+    flex-direction: column;
+}
+.project-files .nav
+.selection select{
+    padding: 6px 10px;
+    width: 250px;
+    color: var(--secondary);
+    border-radius: 5px;
+    border: 2px solid var(--secondary);
+}
+
+.project-files .nav button{
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--white);
+    padding: 8px 20px;
+    border-radius: 5px;
+    border-color: var(--hover);
+    background-color: var(--secondary);
+}
+.project-files .nav button .txt{
+    margin-left: 10px;
+}
+
+
+.project-files .outer{
+    /* background-color: green; */
+    height: 75vh;
+    max-height: 76%;
+    padding: 30px;
+    width: 100%;
+    scroll-behavior: smooth;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+.project-files .inner{
+    /* background-color: orange; */
+    width: 100%;
+    margin: 0 20px;
+    flex-wrap: wrap;
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+}
+.project-files .inner
+a{
+    text-decoration: none;
+    margin: 5px 10px;
+}
+.project-files .inner
+button{
+    background-color: white;
+    height: 27vh;
+    padding: 10px 40px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    border: none;
+    color: var(--secondary);
+    box-shadow: 1px 1px 18px 0px rgba(0,0,0,0.16);
+    -webkit-box-shadow: 1px 1px 18px 0px rgba(0,0,0,0.16);
+    -moz-box-shadow: 1px 1px 18px 0px rgba(0,0,0,0.16);
+}
+
+.project-files .inner
+button:hover{
+    background-color: var(--hover);
+}
+
+.project-files .inner
+button > *{
+    font-size: 70px;
+}
+
+.project-files .inner
+button span{
+    margin-top: 20px;
+    font-size: medium;
+}
