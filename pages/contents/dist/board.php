@@ -1,11 +1,28 @@
 <?php
 if(isset($_POST['isboard'])){
     session_start();
-    $email = $_SESSION['instrLogin'];
+
     require "../../../config/config.php";
 
 
-    $stx = "SELECT projectid FROM project ORDER BY projectdate DESC";
+    $email = "";
+    $stx = "";
+
+    if(!empty($_SESSION['instrLogin'])){
+        $email = $_SESSION['instrLogin'];
+
+        $stx = "SELECT projectid FROM project ORDER BY projectdate DESC";
+    }
+
+    if(!empty($_SESSION['studLogin'])){
+        $email = $_SESSION['studLogin'];
+
+        $stx = "SELECT projtid FROM project_assigned INNER JOIN project ON projectid = projtid 
+        WHERE studid = '".getemail_ID()."' ORDER BY projectdate DESC";
+    }
+
+
+
     $res = $conn->query($stx);
 
     echo '
@@ -29,7 +46,8 @@ if(isset($_POST['isboard'])){
 
     <div class="cards" id="prj-crds">';
     
-        echo '      
+    if(!empty($_SESSION['instrLogin'])){
+         echo '      
         <div id="create-proj">
             <button id="newproj" value="">
                 Create board
@@ -37,11 +55,14 @@ if(isset($_POST['isboard'])){
             </button>
         </div>
     ';
+    }
 
+      
     if ($res->num_rows > 0) {
         while($row = $res->fetch_assoc()) 
         {
-            echo getCards ($row['projectid'], $email);
+            echo (!empty($_SESSION['instrLogin']))? getCards ($row['projectid'], $email) : getCards ($row['projtid'], $email);
+
         }
     
     }
@@ -74,8 +95,16 @@ function getCards ($projID, $email)
 {
 
     require "../../../config/config.php";
-    $stx = "SELECT projectid, projectname, projectcover, projectdate, projectdue FROM project INNER JOIN instructorreg 
-    ON project.instrid = instructorreg.instrid WHERE projectid = '$projID' AND instructorreg.instremail = '$email'";
+    $stx = "";
+    if(!empty($_SESSION['instrLogin'])){
+
+        $stx = "SELECT projectid, projectname, projectcover, projectdate, projectdue FROM project INNER JOIN instructorreg 
+        ON project.instrid = instructorreg.instrid WHERE projectid = '$projID' AND instructorreg.instremail = '$email'";
+    }else{
+        $stx = "SELECT projectid, projectname, projectcover, projectdate, projectdue FROM project WHERE projectid = '$projID'";
+    }
+
+
     $ispinned = isPinned ($projID);
     $res = $conn->query($stx);
     
@@ -152,6 +181,28 @@ function datetimeFormatter($datetimeString)
 }
 
 
+
+function getemail_ID()
+{
+
+    require "../../../config/config.php";
+    
+    $email = $_SESSION['studLogin'];
+    $sntx = "SELECT studid FROM studentreg WHERE studemail = '$email'";
+
+    $result = $conn -> query($sntx);
+    if($result -> num_rows > 0){
+        while($data = $result -> fetch_assoc()){
+            $result->free();
+            $conn -> close();
+            return $data['studid'];
+        }
+    }
+    $result->free();
+    $conn -> close();
+    return "Username";
+
+}
 
 
 ?>

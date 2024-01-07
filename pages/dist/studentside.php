@@ -79,7 +79,7 @@ if(!isset($_SESSION['studLogin'])){
         <main class="left-sec"> 
                   
             <aside class="sidebar">
-                <a href="dashboard.php"><button class="logo">
+                <a href="studentside.php"><button class="logo">
                     <img src="../images/logo_2.png" alt="">
                 </button></a>
                 
