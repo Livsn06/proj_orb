@@ -90,11 +90,3 @@ $(document).on("click", ".cb-input .CHECKING", function () {
 });
 
 
-
-
-
-$(document).ready(function () {
-    $(document).on("click","#uploadfile" ,function () {
-        alert("Hatdog");
-    });
-});
